@@ -1,0 +1,16 @@
+{
+    "apps": [
+        {
+            "script": "index.js",
+            "watch": false,
+            "env": {
+                "NODE_ENV": "production"
+            },
+            "name": "smart-home-api",
+            "exec_mode": "fork",
+            "exp_backoff_restart_delay": 100,
+            "max_memory_restart": "128M",
+            "time": true
+        }
+    ]
+}
