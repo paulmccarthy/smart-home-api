@@ -1,0 +1,13 @@
+{
+    "extends": "airbnb-base",
+    "rules": {
+        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "strict": "off",
+        "max-len": ["error", { "code": 120, "ignoreComments": true }],
+        "prefer-destructuring": "off",
+        "comma-dangle": ["error", { "functions": "ignore" }],
+        "prefer-template": "off",
+        "func-names": "off",
+        "no-unused-expressions": ["error", { "allowTernary": true }]
+    }
+}

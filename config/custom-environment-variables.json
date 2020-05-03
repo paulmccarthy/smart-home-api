@@ -1,0 +1,15 @@
+{
+    "app": {
+        "host": "APP_HOST",
+        "port": "APP_PORT"
+    },
+    "redis": {
+        "host": "REDIS_HOST",
+        "port": "REDIS_PORT",
+        "db": "REDIS_DB"
+    },
+    "rateLimiting": {
+        "windowMs": "RATE_LIMIT_WINDOW",
+        "max": "RATE_LIMIT_MAX"
+    }
+}
