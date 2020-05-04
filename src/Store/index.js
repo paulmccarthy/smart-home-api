@@ -6,28 +6,41 @@ class Store {
     constructor(config, logger) {
         this.redis = new Redis(config);
         this.logger = logger;
+
+        const apiKeyConfig = Object.assign(...config);
+        apiKeyConfig.db = config.db + 1;
+
+        this.keyStore = new Redis(apiKeyConfig);
     }
 
-    async getState(key) {
+    async getState(deviceName) {
         try {
-            const redisValue = await this.redis.get(key);
-            return JSON.parse(redisValue);
+            if (deviceName && deviceName.toLowerCase && deviceName.toLowerCase() !== 'apikey') {
+                const redisValue = await this.redis.get(deviceName);
+                return JSON.parse(redisValue);
+            }
+
+            return {};
         } catch (err) {
-            this.logger.error(`Error getting ${key} from redis: ${err.message}`);
+            this.logger.error(`Error getting ${deviceName} from redis: ${err.message}`);
             return {};
         }
     }
 
     async setState(deviceName, state) {
         try {
-            const value = {
-                deviceName,
-                modifiedTime: new Date().valueOf(),
-                state
-            };
+            if (deviceName && deviceName.toLowerCase && deviceName.toLowerCase() !== 'apikey') {
+                const value = {
+                    deviceName,
+                    modifiedTime: new Date().valueOf(),
+                    state
+                };
 
-            await this.redis.set(deviceName, JSON.stringify(value));
-            return value;
+                await this.redis.set(deviceName, JSON.stringify(value));
+                return value;
+            }
+
+            return {};
         } catch (err) {
             return {};
         }
@@ -35,7 +48,7 @@ class Store {
 
     async getApiKey() {
         try {
-            return await this.redis.get('apiKey');
+            return await this.keyStore.get('apiKey');
         } catch (err) {
             return null;
         }
