@@ -1,5 +1,7 @@
 const config = require('config');
 const express = require('express');
+const inspect = require('util').inspect;
+
 const logger = require('./Logger');
 const DevicesMiddleware = require('./api/devices/Middleware');
 const DevicesRoutes = require('./api/devices/Routes');
@@ -24,6 +26,10 @@ app.use('/api/devices', deviceRoutes);
 // express error handler must have 4 parameters, so ignore unused next
 /* eslint-disable-next-line no-unused-vars */
 app.use((err, req, res, next) => {
+    logger.error(`Error: ${err.message}`);
+    logger.error(`Body: ${inspect(req.body)}`);
+    logger.error(`Params: ${inspect(req.params)}`);
+    logger.error(`Stack: ${err.stack}`);
     res.status(200).json({});
 });
 

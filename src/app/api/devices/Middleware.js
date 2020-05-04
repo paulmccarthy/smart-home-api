@@ -1,4 +1,5 @@
 const rateLimiter = require('express-rate-limit');
+const { validateGetState, validateSetState } = require('./validation');
 
 module.exports = (store, config, logger) => ({
     async checkApiKey(req, res, next) {
@@ -9,15 +10,15 @@ module.exports = (store, config, logger) => ({
             if (storedKey && storedKey === userKey) {
                 next();
             } else {
-                logger.warn(`Bad API key received from ${req.ip}: ${userKey}`);
-                res.status(200).json({});
+                const err = new Error(`Bad API key received from ${req.ip}: ${userKey}`);
+                next(err);
             }
         } catch (err) {
             logger.error(`Error checking API Key ${err.message}`);
-            logger.error(err.stack);
-            res.status(200).json({});
+            next(err);
         }
     },
-    rateLimit: rateLimiter(config.rateLimiting)
-}
-);
+    rateLimit: rateLimiter(config.rateLimiting),
+    validateGetState,
+    validateSetState
+});
