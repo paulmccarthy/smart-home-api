@@ -4,7 +4,7 @@
   "description": "API for storing state of smart home devices",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test mocha --recursive --exit test/tests/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -29,8 +29,12 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2"
+    "eslint-plugin-import": "^2.20.2",
+    "mocha": "^7.1.2",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5"
   }
 }

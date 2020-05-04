@@ -18,10 +18,8 @@ module.exports = (store, middleware, logger) => {
     router.post('/set-state', checkApiKey, validateSetState, async (req, res, next) => {
         logger.info(`/set-state called with ${inspect(req.body)}`);
         try {
-            await store.setState(req.body.deviceName, req.body.state);
-            const newState = await store.getState(req.body.deviceName);
-            newState.deviceName = req.body.deviceName;
-            res.status(200).json(newState);
+            const storedState = await store.setState(req.body.deviceName, req.body.state);
+            res.status(200).json(storedState);
         } catch (err) {
             logger.error(`Error handling set-state: ${err.message}`);
             next(err);
